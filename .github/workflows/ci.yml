@@ -45,7 +45,6 @@ jobs:
         distro:
           - centos7
           - centos8
-          - ubuntu2004
 
     steps:
       - name: Check out the codebase.

@@ -1,0 +1,10 @@
+---
+
+- name: Install documented dependencies.
+  package:
+    name:
+      - curl
+    state: present
+  tags:
+    - install
+    - dependencies

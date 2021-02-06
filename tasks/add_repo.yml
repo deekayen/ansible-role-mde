@@ -1,0 +1,35 @@
+---
+
+- name: Add Microsoft apt key.
+  apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
+    state: present
+  when: ansible_os_family == "Debian"
+  tags:
+    - debian
+    - repo
+
+- name: Add Microsoft apt repository for MDATP.
+  apt_repository:
+    repo: "deb [arch=arm64,armhf,amd64] https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_version }}/prod {{ channel }} main"
+    filename: "microsoft-{{ channel }}.list"
+    update_cache: yes
+    state: present
+  when: ansible_os_family == "Debian"
+  tags:
+    - debian
+    - repo
+
+- name: Add Microsoft yum repository for MDATP.
+  yum_repository:
+    name: "packages-microsoft-com-prod-{{ channel }}"
+    description: Microsoft Defender for Endpoint
+    file: "microsoft-{{ channel }}"
+    baseurl: "https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_version }}/{{ channel }}/"
+    gpgcheck: yes
+    enabled: yes
+  when: ansible_os_family == "RedHat"
+  tags:
+    - redhat
+    - repo

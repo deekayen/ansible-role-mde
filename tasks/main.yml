@@ -18,6 +18,7 @@
 
   - name: Install the mdatp package from Microsoft.
     include_tasks: install_mdatp.yml
+
   when: not uninstall
 
 - name: Remove the mdatp package.

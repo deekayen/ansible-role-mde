@@ -13,24 +13,12 @@
 - block:
   - name: Setup mdtap repository from microsoft.com.
     include_tasks: add_repo.yml
-    tags:
-      - repo
 
   - name: Unzip the onboarding package from Microsoft Defender Security Center.
     include_tasks: onboarding_setup.yml
-    apply:
-      tags:
-        - onboarding
-    tags:
-      - onboarding
 
   - name: Install the mdatp package from Microsoft.
     include_tasks: install_mdatp.yml
-    apply:
-      tags:
-        - install
-    tags:
-      - install
 
   when: not uninstall
 

@@ -8,3 +8,18 @@
   tags:
     - install
     - dependencies
+
+- block:
+  - name: Setup mdtap repository from microsoft.com.
+    include_tasks: add_repo.yml
+
+  - name: Unzip the onboarding package from Microsoft Defender Security Center.
+    include_tasks: onboarding_setup.yml
+
+  - name: Install the mdatp package from Microsoft.
+    include_tasks: install_mdatp.yml
+  when: not uninstall
+
+- name: Remove the mdatp package.
+  include_tasks: uninstall_mdatp.yml
+  when: uninstall

@@ -18,6 +18,7 @@ Default Variables
 
     channel: prod
     onboarding_source: files/WindowsDefenderATPOnboardingPackage.zip
+    uninstall: false
 
 Example Playbook
 ----------------

@@ -1,5 +1,5 @@
 ---
 
 channel: prod
-onboarding_source: files/WindowsDefenderATPOnboardingPackage.zip
+onboarding_source: "{{ role_path }}/files/WindowsDefenderATPOnboardingPackage.zip"
 uninstall: false

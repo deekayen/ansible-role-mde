@@ -16,8 +16,12 @@ curl
 Default Variables
 -----------------
 
+Onboarding source supports replacing with a URL and expects the zip file downloaded from the Microsoft Defender Security Center device management onboarding website. This role expects you'll host that file internally on an artifact server like Nexus or as an unauthenticated LFS git object.
+
+I know templating a jinja2 json file is also a potential route to upload configurations and would appreciate an elegant pull request to support something like that.
+
     channel: prod
-    onboarding_source: files/WindowsDefenderATPOnboardingPackage.zip
+    onboarding_source: "{{ role_path }}/files/WindowsDefenderATPOnboardingPackage.zip"
     uninstall: false
 
 Example Playbook
@@ -26,6 +30,17 @@ Example Playbook
     - hosts: servers
       roles:
         - deekayen.mdatp
+
+Tags
+----
+
+* debian
+* redhat
+* repo
+* install
+* dependencies
+* onboarding
+* uninstall
 
 License
 -------

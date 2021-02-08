@@ -25,3 +25,23 @@
 - name: Remove the mdatp package.
   include_tasks: uninstall_mdatp.yml
   when: uninstall
+
+- name: Check for install log.
+  stat:
+    path: /var/log/microsoft/mdatp_install.log
+  register: mdatp_install_log
+
+- block:
+  - name: Load install log contents.
+    command: "cat /var/log/microsoft/mdatp_install.log" # noqa 301
+    register: mdatp_install
+
+  - name: "DEBUG: Print mdatp install log to console."
+    debug:
+      msg: "{{ mdatp_install.stdout }}"
+      verbosity: 2
+
+  when:
+    - mdatp_install_log is defined
+    - mdatp_install_log.exists
+    - mdatp_install_log.size > 0

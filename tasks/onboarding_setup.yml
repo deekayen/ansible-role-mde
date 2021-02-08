@@ -11,20 +11,14 @@
   tags:
     - onboarding
 
-- name: Register mdatp_onboard.json.
-  stat:
-    path: /etc/opt/microsoft/mdatp/mdatp_onboard.json
-  register: mdatp_onboard
-  tags:
-    - onboarding
-
 - name: Extract onboarding package.
   unarchive:
     src: "{{ onboarding_source }}"
     dest: /etc/opt/microsoft/mdatp
+    creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
     mode: 0600
     owner: root
     group: root
-  when: not mdatp_onboard.stat.exists
+    remote_src: "{{ '://' in onboarding_source | ternary('yes', 'no') }}"
   tags:
     - onboarding

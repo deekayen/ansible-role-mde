@@ -29,6 +29,15 @@
   tags:
     - onboarding
 
+- name: Get details on the uploaded file.
+  stat:
+    path: /tmp/WindowsDefenderATPOnboardingPackage.zip
+  register: onboarding_package
+
+- name: "DEBUG: onboarding package information."
+  debug:
+    var: onboarding_package
+
 # Failed to find handler for...
 # when using unarchive module to copy using variable src means
 # using workarounds above to create a static remote location

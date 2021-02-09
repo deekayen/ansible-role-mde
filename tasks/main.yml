@@ -63,5 +63,5 @@
 
   when:
     - mdatp_install_log is defined
-    - mdatp_install_log.exists
-    - mdatp_install_log.size > 0
+    - mdatp_install_log.stat.exists
+    - mdatp_install_log.stat.size > 0

@@ -3,7 +3,6 @@
 - name: Create MDATP directories.
   file:
     path: /etc/opt/microsoft/mdatp/
-    recurse: true
     state: directory
     mode: 0755
     owner: root
@@ -28,3 +27,11 @@
 - name: "DEBUG: output from onboarding unzip attempt."
   debug:
     var: unarchive_out
+
+- name: Custom error handling for configuration unzip.
+  fail:
+    msg: "mdatp configuration json did not unzip successfully."
+  when:
+    - unarchive_out is defined
+    - unarchive_out.failed
+    - not 'Failed to find handler' in unarchive_out.msg

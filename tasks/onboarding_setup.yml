@@ -20,5 +20,9 @@
     owner: root
     group: root
     remote_src: "{{ '://' in onboarding_source | ternary('yes', 'no') }}"
+  register: out
+  failed_when:
+    - out.rc != 0
+    - not 'Failed to find handler for' in out.stdout
   tags:
     - onboarding

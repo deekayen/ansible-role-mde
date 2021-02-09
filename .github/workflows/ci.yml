@@ -43,6 +43,8 @@ jobs:
     strategy:
       matrix:
         distro:
+          - centos7
+          - centos8
           - debian10
 
     steps:

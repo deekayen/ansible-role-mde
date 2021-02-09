@@ -24,6 +24,13 @@ I know templating a jinja2 json file is also a potential route to upload configu
     onboarding_source: "{{ role_path }}/files/WindowsDefenderATPOnboardingPackage.zip"
     uninstall: false
 
+From the Microsoft documentation:
+
+> Defender for Endpoint for Linux can be deployed from one of the following channels (denoted below as [channel]): insiders-fast, insiders-slow, or prod. Each of these channels corresponds to a Linux software repository.
+>
+> The choice of the channel determines the type and frequency of updates that are offered to your device. Devices in insiders-fast are the first ones to receive updates and new features, followed later by insiders-slow and lastly by prod.
+
+
 Example Playbook
 ----------------
 

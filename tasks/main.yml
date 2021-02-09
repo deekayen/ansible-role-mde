@@ -10,6 +10,17 @@
     - install
     - dependencies
 
+- name: Install documented Debian dependencies.
+  apt:
+    name:
+      - python-apt
+      - gnupg
+    state: present
+  when: ansible_os_family == "Debian"
+  tags:
+    - install
+    - dependencies
+
 - block:
   - name: Setup mdtap repository from microsoft.com.
     include_tasks: add_repo.yml

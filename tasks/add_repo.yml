@@ -33,7 +33,7 @@
 
 - name: Add Microsoft yum repository for MDATP.
   yum_repository:
-    name: "packages-microsoft-com-prod-{{ channel }}"
+    name: "packages-microsoft-com-{{ channel }}"
     description: Microsoft Defender for Endpoint
     file: "microsoft-{{ channel }}"
     baseurl: "https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/{{ channel }}/"

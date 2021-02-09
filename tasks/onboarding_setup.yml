@@ -11,40 +11,14 @@
   tags:
     - onboarding
 
-- name: Download onboarding package.
-  get_url:
-    url: "{{ onboarding_source }}"
-    dest: /tmp/WindowsDefenderATPOnboardingPackage.zip
-    mode: 0640
-  when: "'://' in onboarding_source"
-  tags:
-    - onboarding
-
-- name: Copy onboarding package.
-  copy:
+- name: Extract onboarding package.
+  unarchive:
     src: "{{ onboarding_source }}"
-    dest: /tmp/WindowsDefenderATPOnboardingPackage.zip
-    mode: 0640
-  when: "not '://' in onboarding_source"
-  tags:
-    - onboarding
-
-- name: Get details on the uploaded file.
-  stat:
-    path: /tmp/WindowsDefenderATPOnboardingPackage.zip
-  register: onboarding_package
-
-- name: "DEBUG: onboarding package information."
-  debug:
-    var: onboarding_package
-
-# Failed to find handler for...
-# when using unarchive module to copy using variable src means
-# using workarounds above to create a static remote location
-# https://github.com/ansible/ansible/issues/35645
-- name: "Extract onboarding package." # noqa 303
-  command: unzip /tmp/WindowsDefenderATPOnboardingPackage.zip -d /etc/opt/microsoft/mdatp
-  args:
+    dest: /etc/opt/microsoft/mdatp
     creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
+    mode: 0600
+    owner: root
+    group: root
+    remote_src: "{{ '://' in onboarding_source | ternary('yes', 'no') }}"
   tags:
     - onboarding

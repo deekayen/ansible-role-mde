@@ -18,7 +18,7 @@
     mode: 0600
     owner: root
     group: root
-    remote_src: "{{ '://' in onboarding_source | ternary('yes', 'no') }}"
+    remote_src: "{{ '://' in onboarding_source }}"
   register: unarchive_out
   ignore_errors: yes
   tags:

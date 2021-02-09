@@ -57,7 +57,6 @@
   - name: "DEBUG: Print mdatp install log to console."
     debug:
       msg: "{{ mdatp_install.stdout }}"
-      verbosity: 2
     tags:
       - debug
 

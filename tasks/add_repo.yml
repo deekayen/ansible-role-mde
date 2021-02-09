@@ -12,7 +12,7 @@
 
 - name: Add Microsoft apt repository for MDATP.
   apt_repository:
-    repo: "deb [arch=arm64,armhf,amd64] https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_version }}/prod {{ channel == 'prod' | ternary('buster', channel) }} main" # noqa 204
+    repo: "deb [arch=arm64,armhf,amd64] https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_version }}/prod {{ (channel == 'prod') | ternary(ansible_distribution_release, channel) }} main" # noqa 204
     filename: "microsoft-{{ channel }}.list"
     update_cache: yes
     state: present

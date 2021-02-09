@@ -11,12 +11,16 @@ If an error occurs during installation, the installer will only report a general
 Dependencies
 ------------
 
-curl
+* curl
+* unzip
+* gnupg (debian)
+* python-apt (debian)
+
 
 Default Variables
 -----------------
 
-Onboarding source supports replacing with a URL and expects the zip file downloaded from the Microsoft Defender Security Center device management onboarding website. This role expects you'll host that file internally on an artifact server like Nexus or as an unauthenticated LFS git object.
+Onboarding source supports replacing with a URL and expects the zip file downloaded from the Microsoft Defender Security Center device management onboarding website. This role expects you'll host that file internally on an artifact server like Nexus or as an unauthenticated LFS git object. If you keep the default `onboarding_source` value, it will deposit an empty json configuration file.
 
 I know templating a jinja2 json file is also a potential route to upload configurations and would appreciate an elegant pull request to support something like that.
 

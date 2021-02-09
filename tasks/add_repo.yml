@@ -36,7 +36,7 @@
     name: "packages-microsoft-com-{{ channel }}"
     description: Microsoft Defender for Endpoint
     file: "microsoft-{{ channel }}"
-    baseurl: "https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/{{ channel }}/"
+    baseurl: "https://packages.microsoft.com/{{ (ansible_distribution == 'RedHat') | ternary('rhel', ansible_distribution) | lower }}/{{ ansible_distribution_major_version }}/{{ channel }}/" # noqa 204
     gpgcheck: yes
     enabled: yes
   when: ansible_os_family == "RedHat"

@@ -20,9 +20,11 @@
     owner: root
     group: root
     remote_src: "{{ '://' in onboarding_source | ternary('yes', 'no') }}"
-  register: out
-  failed_when:
-    - out.rc != 0
-    - not 'Failed to find handler for' in out.stdout
+  register: unarchive_out
+  ignore_errors: yes
   tags:
     - onboarding
+
+- name: "DEBUG: output from onboarding unzip attempt."
+  debug:
+    var: unarchive_out

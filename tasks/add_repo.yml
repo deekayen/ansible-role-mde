@@ -21,6 +21,16 @@
     - debian
     - repo
 
+- name: Add Microsoft rpm key.
+  rpm_key:
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    fingerprint: BC528686B50D79E339D3721CEB3E94ADBE1229CF
+    state: present
+  when: ansible_os_family == "RedHat"
+  tags:
+    - redhat
+    - repo
+
 - name: Add Microsoft yum repository for MDATP.
   yum_repository:
     name: "packages-microsoft-com-prod-{{ channel }}"

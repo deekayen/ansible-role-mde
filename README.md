@@ -1,4 +1,4 @@
-Deploy Microsoft Defender for Endpoint
+Deploy Microsoft Defender for Endpoint for Linux
 ===========
 
 [![CI](https://github.com/deekayen/ansible-role-mdatp/workflows/CI/badge.svg)](https://github.com/deekayen/ansible-role-mdatp/actions?query=workflow%3ACI) [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
@@ -38,9 +38,19 @@ From the Microsoft documentation:
 Example Playbook
 ----------------
 
-    - hosts: servers
+This example presumes you have a Sonatype Nexus server where you uploaded the onboarding package to a raw repository named *infosec-hosted*.
+
+    ---
+
+    - name: Install Microsoft Defender ATP agent for Linux.
+      hosts: all:!platform_windows
+
+      vars:
+        onboarding_source: https://nexus.example.com/repository/infosec-hosted/mdatp/WindowsDefenderATPOnboardingPackage_Linux_Mgmt_Tool.zip
+
       roles:
         - deekayen.mdatp
+
 
 Tags
 ----

@@ -13,6 +13,7 @@
 - name: Install documented Debian dependencies.
   apt:
     name:
+      - apt-transport-https
       - python-apt
       - python3-apt
       - gnupg

@@ -4,6 +4,9 @@ dependency:
   name: galaxy
 driver:
   name: docker
+lint: |
+  ansible-lint .
+  flake8
 platforms:
   - name: instance
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"

@@ -15,28 +15,6 @@ defaults:
 
 jobs:
 
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'deekayen.mdatp'
-
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install test dependencies.
-        run: pip3 install ansible-lint[core,yamllint]
-
-      - name: Lint code.
-        run: |
-          yamllint -d relaxed .
-          ansible-lint
-
   molecule:
     name: Molecule
     runs-on: ubuntu-latest
@@ -59,7 +37,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker pytest-testinfra
+        run: pip3 install molecule[docker,lint] docker flake8 pytest-testinfra
 
       - name: Run Molecule tests.
         run: molecule test

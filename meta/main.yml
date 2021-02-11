@@ -19,6 +19,9 @@ galaxy_info:
     - name: debian
       versions:
         - buster
+    - name: ubuntu
+      versions:
+        - focal
 
   galaxy_tags:
     - mdatp

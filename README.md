@@ -13,6 +13,7 @@ Dependencies
 
 * curl
 * unzip
+* apt-transport-https (debian)
 * gnupg (debian)
 * python-apt (debian)
 

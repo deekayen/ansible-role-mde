@@ -24,7 +24,8 @@ jobs:
           - centos7
           - centos8
           - debian10
-          - ubuntu2004
+          - fedora33
+          - ubuntu1804
 
     steps:
       - name: Check out the codebase.

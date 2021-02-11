@@ -16,12 +16,15 @@ galaxy_info:
       versions:
         - 7
         - 8
+    - name: fedora
+      versions:
+        - 33
     - name: debian
       versions:
         - buster
     - name: ubuntu
       versions:
-        - focal
+        - bionic
 
   galaxy_tags:
     - mdatp

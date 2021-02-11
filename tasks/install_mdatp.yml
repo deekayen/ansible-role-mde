@@ -1,8 +1,0 @@
----
-
-- name: Install mdatp from Microsoft repository.
-  package:
-    name: mdatp
-    state: present
-  tags:
-    - install

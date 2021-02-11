@@ -1,0 +1,3 @@
+---
+
+install_log: /var/log/microsoft/mdatp/install.log

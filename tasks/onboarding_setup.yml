@@ -3,7 +3,7 @@
 - name: Create MDATP directories.
   file:
     path: /etc/opt/microsoft/mdatp/
-    state: directory
+    state: "{{ uninstall | ternary ('absent', 'directory') }}"
     mode: 0755
     owner: root
     group: root
@@ -21,12 +21,14 @@
     remote_src: "{{ '://' in onboarding_source }}"
   register: unarchive_out
   ignore_errors: yes
+  when: not uninstall
   tags:
     - onboarding
 
 - name: "DEBUG: output from onboarding unzip attempt."
   debug:
     var: unarchive_out
+    verbosity: 3
 
 - name: Custom error handling for configuration unzip.
   fail:

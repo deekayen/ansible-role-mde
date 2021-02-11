@@ -6,6 +6,7 @@
       - curl
       - unzip
     state: present
+  when: not uninstall
   tags:
     - install
     - dependencies
@@ -18,39 +19,33 @@
       - python3-apt
       - gnupg
     state: present
-  when: ansible_os_family == "Debian"
+  when:
+    - not uninstall
+    - ansible_os_family == "Debian"
   tags:
     - install
     - dependencies
 
-- block:
-  - name: Setup mdtap repository from microsoft.com.
-    include_tasks: add_repo.yml
+- name: Setup packages.microsoft.com repository.
+  include_tasks: repository.yml
 
-  - name: Unzip the onboarding package from Microsoft Defender Security Center.
-    include_tasks: onboarding_setup.yml
+- name: Unzip the onboarding package from Microsoft Defender Security Center.
+  include_tasks: onboarding_setup.yml
 
-  - name: Install the mdatp package from Microsoft.
-    include_tasks: install_mdatp.yml
-
-  when: not uninstall
-
-- name: Remove the mdatp package.
-  include_tasks: uninstall_mdatp.yml
-  when: uninstall
-  tags:
-    - uninstall
+- name: Manage the mdatp package from Microsoft.
+  include_tasks: package.yml
 
 - name: Check for install log.
   stat:
-    path: /var/log/microsoft/mdatp_install.log
+    path: "{{ install_log }}"
   register: mdatp_install_log
+  when: ansible_verbosity > 2
   tags:
     - debug
 
 - block:
   - name: Load install log contents.
-    command: "cat /var/log/microsoft/mdatp_install.log" # noqa no-changed-when
+    command: "cat {{ install_log }}" # noqa no-changed-when
     register: mdatp_install
     tags:
       - debug
@@ -58,6 +53,7 @@
   - name: "DEBUG: Print mdatp install log to console."
     debug:
       msg: "{{ mdatp_install.stdout }}"
+      verbosity: 3
     tags:
       - debug
 

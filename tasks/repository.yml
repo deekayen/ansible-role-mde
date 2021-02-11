@@ -4,7 +4,7 @@
   apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
     id: BC528686B50D79E339D3721CEB3E94ADBE1229CF
-    state: present
+    state: "{{ uninstall | ternary ('absent', 'present') }}"
   when: ansible_os_family == "Debian"
   tags:
     - debian
@@ -15,7 +15,7 @@
     repo: "deb [arch=arm64,armhf,amd64] https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/prod {{ (channel == 'prod') | ternary(ansible_distribution_release, channel) }} main" # noqa 204
     filename: "microsoft-{{ channel }}.list"
     update_cache: yes
-    state: present
+    state: "{{ uninstall | ternary ('absent', 'present') }}"
   when: ansible_os_family == "Debian"
   tags:
     - debian
@@ -25,7 +25,7 @@
   rpm_key:
     key: https://packages.microsoft.com/keys/microsoft.asc
     fingerprint: BC528686B50D79E339D3721CEB3E94ADBE1229CF
-    state: present
+    state: "{{ uninstall | ternary ('absent', 'present') }}"
   when: ansible_os_family == "RedHat"
   tags:
     - redhat
@@ -39,6 +39,7 @@
     baseurl: "https://packages.microsoft.com/{{ (ansible_distribution == 'RedHat') | ternary('rhel', ansible_distribution) | lower }}/{{ ansible_distribution_major_version }}/{{ channel }}/" # noqa 204
     gpgcheck: yes
     enabled: yes
+    state: "{{ uninstall | ternary ('absent', 'present') }}"
   when: ansible_os_family == "RedHat"
   tags:
     - redhat

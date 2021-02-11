@@ -1,0 +1,8 @@
+---
+
+- name: Manage mdatp package from Microsoft repository.
+  package:
+    name: mdatp
+    state: "{{ uninstall | ternary ('absent', 'present') }}"
+  tags:
+    - package

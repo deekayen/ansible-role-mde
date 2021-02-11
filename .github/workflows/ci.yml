@@ -23,9 +23,9 @@ jobs:
         distro:
           - centos7
           - centos8
+          - debian9
           - debian10
           - fedora33
-          - ubuntu1804
 
     steps:
       - name: Check out the codebase.

@@ -21,10 +21,8 @@ galaxy_info:
         - 33
     - name: debian
       versions:
+        - stretch
         - buster
-    - name: ubuntu
-      versions:
-        - bionic
 
   galaxy_tags:
     - mdatp

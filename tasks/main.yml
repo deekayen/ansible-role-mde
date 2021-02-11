@@ -58,6 +58,6 @@
       - debug
 
   when:
-    - mdatp_install_log is defined
+    - mdatp_install_log.stat.exists is defined
     - mdatp_install_log.stat.exists
     - mdatp_install_log.stat.size > 0

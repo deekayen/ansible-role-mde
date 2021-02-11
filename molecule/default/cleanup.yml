@@ -1,8 +1,11 @@
 ---
 
-- name: Converge
+- name: Cleanup
   hosts: all
   become: true
+
+  vars:
+    uninstall: true
 
   roles:
     - deekayen.mdatp

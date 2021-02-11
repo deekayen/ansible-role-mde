@@ -25,7 +25,6 @@ jobs:
           - centos8
           - debian9
           - debian10
-          - fedora31
 
     steps:
       - name: Check out the codebase.

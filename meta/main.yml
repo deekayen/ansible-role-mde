@@ -16,9 +16,6 @@ galaxy_info:
       versions:
         - 7
         - 8
-    - name: fedora
-      versions:
-        - 31
     - name: debian
       versions:
         - stretch

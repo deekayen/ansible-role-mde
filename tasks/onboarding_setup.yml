@@ -24,12 +24,18 @@
   when: not uninstall
   tags:
     - onboarding
+    - molecule-notest
 
 - name: "DEBUG: output from onboarding unzip attempt."
   debug:
     var: unarchive_out
     verbosity: 3
-
+  when:
+    - unarchive_out is defined
+  tags:
+    - onboarding
+    - molecule-notest
+    
 - name: Custom error handling for configuration unzip.
   fail:
     msg: "mdatp configuration json did not unzip successfully."
@@ -37,3 +43,6 @@
     - unarchive_out is defined
     - unarchive_out.failed
     - not 'Failed to find handler' in unarchive_out.msg
+  tags:
+    - onboarding
+    - molecule-notest

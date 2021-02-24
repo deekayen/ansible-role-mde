@@ -41,14 +41,14 @@ This example presumes you have a Sonatype Nexus server where you uploaded the on
 
     ---
 
-    - name: Install Microsoft Defender ATP agent for Linux.
+    - name: Install Microsoft Defender Endpoint for Linux.
       hosts: all:!platform_windows
 
       vars:
-        onboarding_source: https://nexus.example.com/repository/infosec-hosted/mdatp/WindowsDefenderATPOnboardingPackage_Linux_Mgmt_Tool.zip
+        onboarding_source: https://nexus.example.com/repository/infosec-hosted/mde/WindowsDefenderATPOnboardingPackage_Linux_Mgmt_Tool.zip
 
       roles:
-        - deekayen.mdatp
+        - deekayen.mde
 
 
 Tags

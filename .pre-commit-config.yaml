@@ -1,8 +1,8 @@
 ---
 
 repos:
-- repo: https://github.com/ansible/ansible-lint.git
-  rev: v5.0.0
+- repo: https://github.com/ansible-community/ansible-lint.git
+  rev: v5.0.2
   hooks:
     - id: ansible-lint
       files: \.(yaml|yml)$

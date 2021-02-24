@@ -10,7 +10,7 @@
     - debian
     - repo
 
-- name: Add Microsoft apt repository for MDATP.
+- name: Add Microsoft apt repository for Defender.
   apt_repository:
     repo: "deb [arch=arm64,armhf,amd64] https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/prod {{ (channel == 'prod') | ternary(ansible_distribution_release, channel) }} main" # noqa 204
     filename: "microsoft-{{ channel }}.list"
@@ -31,10 +31,10 @@
     - redhat
     - repo
 
-- name: Add Microsoft yum repository for MDATP.
+- name: Add Microsoft yum repository for Defender.
   yum_repository:
     name: "packages-microsoft-com-{{ channel }}"
-    description: Microsoft Defender for Endpoint
+    description: Microsoft Defender Endpoint for Linux
     file: "microsoft-{{ channel }}"
     baseurl: "https://packages.microsoft.com/{{ (ansible_distribution == 'RedHat') | ternary('rhel', ansible_distribution) | lower }}/{{ ansible_distribution_major_version }}/{{ channel }}/" # noqa 204
     gpgcheck: yes

@@ -1,6 +1,6 @@
 ---
 
-- name: Create MDATP directories.
+- name: Create Defender configuration directories.
   file:
     path: /etc/opt/microsoft/mdatp/
     state: "{{ uninstall | ternary ('absent', 'directory') }}"
@@ -35,7 +35,7 @@
   tags:
     - onboarding
     - molecule-notest
-    
+
 - name: Custom error handling for configuration unzip.
   fail:
     msg: "mdatp configuration json did not unzip successfully."

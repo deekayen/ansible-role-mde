@@ -33,7 +33,7 @@
 - name: Unzip the onboarding package from Microsoft Defender Security Center.
   include_tasks: onboarding_setup.yml
 
-- name: Manage the mdatp package from Microsoft.
+- name: Manage the Defender package from Microsoft.
   include_tasks: package.yml
 
 - name: Check for install log.

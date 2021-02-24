@@ -1,7 +1,7 @@
-Deploy Microsoft Defender for Endpoint for Linux
+Deploy Microsoft Defender Endpoint for Linux
 ===========
 
-[![CI](https://github.com/deekayen/ansible-role-mdatp/workflows/CI/badge.svg)](https://github.com/deekayen/ansible-role-mdatp/actions?query=workflow%3ACI) [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
+[![CI](https://github.com/deekayen/ansible-role-mde/workflows/CI/badge.svg)](https://github.com/deekayen/ansible-role-mde/actions?query=workflow%3ACI) [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 
 [Deploy Microsoft Defender for Endpoint for Linux](https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/linux-install-with-ansible).
 

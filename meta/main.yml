@@ -1,9 +1,9 @@
 galaxy_info:
-  role_name: mdatp
+  role_name: mde
   author: David Norman
-  description: Deploy Microsoft Defender for Endpoint for Linux with Ansible.
+  description: Deploy Microsoft Defender Endpoint for Linux with Ansible.
 
-  issue_tracker_url: https://github.com/deekayen/ansible-role-mdatp/issues
+  issue_tracker_url: https://github.com/deekayen/ansible-role-mde/issues
 
   license: BSD
 
@@ -23,9 +23,11 @@ galaxy_info:
 
   galaxy_tags:
     - mdatp
+    - mde
     - defender
     - antimalware
     - antivirus
     - microsoft
+    - protection
 
 dependencies: []

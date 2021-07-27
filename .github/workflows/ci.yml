@@ -21,7 +21,6 @@ jobs:
         distro:
           - centos7
           - centos8
-          - debian9
           - debian10
 
     steps:
@@ -36,7 +35,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: pip3 install molecule[docker,lint] docker pytest-testinfra
+        run: pip3 install ansible molecule[docker,lint] docker pytest-testinfra
 
       - name: Run Molecule tests.
         run: molecule test

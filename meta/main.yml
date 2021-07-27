@@ -1,5 +1,8 @@
+---
+
 galaxy_info:
   role_name: mde
+  namespace: deekayen
   author: David Norman
   description: Deploy Microsoft Defender Endpoint for Linux with Ansible.
 
@@ -18,7 +21,6 @@ galaxy_info:
         - 8
     - name: debian
       versions:
-        - stretch
         - buster
 
   galaxy_tags:

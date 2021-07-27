@@ -11,6 +11,19 @@
     - install
     - dependencies
 
+- name: Install undocumented dependencies for EL 8.
+  dnf:
+    name:
+      - audispd-plugins
+    state: present
+  when:
+    - not uninstall
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == "8"
+  tags:
+    - install
+    - dependencies
+
 - name: Install documented Debian dependencies.
   apt:
     name:

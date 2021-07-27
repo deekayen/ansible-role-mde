@@ -21,6 +21,7 @@ jobs:
         distro:
           - centos7
           - centos8
+          - debian9
           - debian10
 
     steps:

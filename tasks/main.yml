@@ -1,5 +1,15 @@
 ---
 
+- name: apt-get update
+  apt:
+    update_cache: yes
+  when:
+    - not uninstall
+    - ansible_os_family == "Debian"
+  tags:
+    - install
+    - dependencies
+
 - name: Install documented dependencies.
   package:
     name:

@@ -21,6 +21,7 @@ galaxy_info:
         - 8
     - name: debian
       versions:
+        - stretch
         - buster
 
   galaxy_tags:

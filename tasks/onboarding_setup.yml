@@ -14,7 +14,7 @@
   unarchive:
     src: "{{ onboarding_source }}"
     dest: /etc/opt/microsoft/mdatp
-    creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
+    creates: /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
     mode: 0600
     owner: root
     group: root
@@ -25,6 +25,11 @@
   tags:
     - onboarding
     - molecule-notest
+    
+- name: Create licence file
+  command:
+    cmd: /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
+    creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
 
 - name: "DEBUG: output from onboarding unzip attempt."
   debug:

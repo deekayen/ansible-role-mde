@@ -28,7 +28,7 @@
     
 - name: Create licence file
   command:
-    cmd: /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
+    cmd: /usr/bin/python3 /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
     creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
 
 - name: "DEBUG: output from onboarding unzip attempt."

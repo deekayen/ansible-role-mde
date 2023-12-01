@@ -10,47 +10,47 @@
   tags:
     - onboarding
 
-- name: Extract onboarding package.
-  unarchive:
-    src: "{{ onboarding_source }}"
-    dest: /etc/opt/microsoft/mdatp
-    creates: /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
-    mode: 0600
-    owner: root
-    group: root
-    remote_src: "{{ '://' in onboarding_source }}"
-  register: unarchive_out
-  ignore_errors: yes
+- name: Extract and validate the onboarding package.
+  block:
+  - name: Extract onboarding package.
+    unarchive:
+      src: "{{ onboarding_source }}"
+      dest: /etc/opt/microsoft/mdatp
+      creates: /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
+      mode: 0600
+      owner: root
+      group: root
+      remote_src: "{{ '://' in onboarding_source }}"
+    register: unarchive_out
+    ignore_errors: yes
+    tags:
+      - onboarding
+      - molecule-notest
+      
+  - name: Create licence file
+    command:
+      cmd: /usr/bin/python3 /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
+      creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
+  
+  - name: "DEBUG: output from onboarding unzip attempt."
+    debug:
+      var: unarchive_out
+      verbosity: 3
+    when:
+      - unarchive_out is defined
+    tags:
+      - onboarding
+      - molecule-notest
+  
+  - name: Custom error handling for configuration unzip.
+    fail:
+      msg: "mdatp configuration json did not unzip successfully."
+    when:
+      - unarchive_out is defined
+      - unarchive_out.failed
+      - not 'Failed to find handler' in unarchive_out.msg
+    tags:
+      - onboarding
+      - molecule-notest
+  
   when: not uninstall
-  tags:
-    - onboarding
-    - molecule-notest
-    
-- name: Create licence file
-  command:
-    cmd: /usr/bin/python3 /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
-    creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
-  when: not uninstall
-
-- name: "DEBUG: output from onboarding unzip attempt."
-  debug:
-    var: unarchive_out
-    verbosity: 3
-  when:
-    - unarchive_out is defined
-    - not uninstall
-  tags:
-    - onboarding
-    - molecule-notest
-
-- name: Custom error handling for configuration unzip.
-  fail:
-    msg: "mdatp configuration json did not unzip successfully."
-  when:
-    - unarchive_out is defined
-    - unarchive_out.failed
-    - not 'Failed to find handler' in unarchive_out.msg
-    - not uninstall
-  tags:
-    - onboarding
-    - molecule-notest

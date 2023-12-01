@@ -32,6 +32,7 @@
     verbosity: 3
   when:
     - unarchive_out is defined
+    - not uninstall
   tags:
     - onboarding
     - molecule-notest
@@ -43,6 +44,7 @@
     - unarchive_out is defined
     - unarchive_out.failed
     - not 'Failed to find handler' in unarchive_out.msg
+    - not uninstall
   tags:
     - onboarding
     - molecule-notest

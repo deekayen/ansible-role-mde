@@ -2,12 +2,12 @@
 - name: Validate OS version requirements.
   ansible.builtin.assert:
     that:
-      - ansible_distribution_major_version | int > 6
+      - ansible_facts.distribution_major_version | int > 6
     fail_msg: "Only RedHat 7 and newer are supported."
     quiet: true
   when:
     - not uninstall | bool
-    - ansible_os_family == "RedHat"
+    - ansible_facts.os_family == "RedHat"
 
 - name: Assert onboarding_source is a local zip path or a URL.
   ansible.builtin.assert:

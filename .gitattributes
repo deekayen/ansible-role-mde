@@ -4,3 +4,6 @@
 *.tgz filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.jar filter=lfs diff=lfs merge=lfs -text
+# The 173-byte placeholder must be a real file in CI checkouts and Galaxy
+# tarballs, which carry LFS pointers instead of LFS content.
+files/WindowsDefenderATPOnboardingPackage.zip -filter -diff -merge binary

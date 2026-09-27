@@ -10,7 +10,7 @@
     mode: "0755"
   when:
     - not uninstall | bool
-    - ansible_os_family == "Debian"
+    - ansible_facts.os_family == "Debian"
   tags:
     - debian
     - repo
@@ -27,7 +27,7 @@
     label: "{{ item.name }}"
   when:
     - not uninstall | bool
-    - ansible_os_family == "Debian"
+    - ansible_facts.os_family == "Debian"
   tags:
     - debian
     - repo
@@ -36,12 +36,12 @@
   ansible.builtin.apt_repository:
     repo: >-
       deb [arch=arm64,armhf,amd64 signed-by={{ mde_apt_keyrings }}]
-      https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ mde_deb_version }}/prod
-      {{ (channel == 'prod') | ternary(ansible_distribution_release, channel) }} main
+      https://packages.microsoft.com/{{ ansible_facts.distribution | lower }}/{{ mde_deb_version }}/prod
+      {{ (channel == 'prod') | ternary(ansible_facts.distribution_release, channel) }} main
     filename: "microsoft-{{ channel }}"
     update_cache: true
     state: "{{ uninstall | bool | ternary('absent', 'present') }}"
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
   tags:
     - debian
     - repo
@@ -55,7 +55,7 @@
     label: "{{ item.name }}"
   when:
     - uninstall | bool
-    - ansible_os_family == "Debian"
+    - ansible_facts.os_family == "Debian"
   tags:
     - debian
     - repo
@@ -68,7 +68,7 @@
   loop: "{{ mde_signing_keys }}"
   loop_control:
     label: "{{ item.name }}"
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
   tags:
     - redhat
     - repo
@@ -78,11 +78,11 @@
     name: "packages-microsoft-com-{{ channel }}"
     description: Microsoft Defender Endpoint for Linux
     file: "microsoft-{{ channel }}"
-    baseurl: "https://packages.microsoft.com/{{ mde_rpm_distro }}/{{ ansible_distribution_major_version }}/{{ channel }}/"
+    baseurl: "https://packages.microsoft.com/{{ mde_rpm_distro }}/{{ ansible_facts.distribution_major_version }}/{{ channel }}/"
     gpgcheck: true
     enabled: true
     state: "{{ uninstall | bool | ternary('absent', 'present') }}"
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts.os_family == "RedHat"
   tags:
     - redhat
     - repo

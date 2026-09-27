@@ -8,14 +8,18 @@ Deploy Microsoft Defender Endpoint for Linux
 If an error occurs during installation, the installer will only report a general failure. The detailed log will be saved to `/var/log/microsoft/mdatp/install.log`.
 
 
+Tested with Molecule on EL 9/10, Amazon Linux 2023, Ubuntu 22.04/24.04/26.04,
+and Debian 12/13. Microsoft publishes Debian-family mdatp builds for amd64
+only in the prod channel.
+
 Dependencies
 ------------
 
-* curl
+* curl (curl-minimal satisfies it on EL 9 and Amazon Linux 2023)
 * unzip
 * apt-transport-https (debian)
 * gnupg (debian)
-* python-apt (debian)
+* python3-apt (debian)
 
 
 Default Variables

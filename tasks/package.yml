@@ -1,8 +1,7 @@
 ---
-
 - name: Manage Defender package from Microsoft repository.
-  package:
+  ansible.builtin.package:
     name: mdatp
-    state: "{{ uninstall | ternary ('absent', 'present') }}"
+    state: "{{ uninstall | bool | ternary('absent', 'present') }}"
   tags:
     - package

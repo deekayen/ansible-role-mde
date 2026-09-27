@@ -1,27 +1,46 @@
-import os
-import testinfra.utils.ansible_runner
+"""Testinfra checks for the Microsoft Defender for Endpoint role."""
 
-testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
-    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+import pytest
+
+ONBOARD = "/etc/opt/microsoft/mdatp/mdatp_onboard.json"
 
 
-def test_mde_installed(host):
+def test_mdatp_installed(host):
     assert host.package("mdatp").is_installed
 
 
-def test_mde_install_log(host):
-    assert host.file("/var/log/microsoft/mdatp/install.log").exists
-
-
-def test_mde_group(host):
+def test_mdatp_account(host):
     assert host.group("mdatp").exists
-
-
-def test_mde_user(host):
     assert host.user("mdatp").exists
 
 
-def test_mde_service(host):
-    service = host.service("mdatp")
+def test_mdatp_service_enabled(host):
+    assert host.service("mdatp").is_enabled
 
-    assert service.is_enabled
+
+def test_onboarding_extracted(host):
+    onboard = host.file(ONBOARD)
+    assert onboard.is_file
+    assert onboard.user == "root"
+    assert onboard.mode == 0o600
+
+
+@pytest.mark.parametrize("name", ["microsoft", "microsoft-2025"])
+def test_signing_keys_trusted(host, name):
+    if host.exists("apt-get"):
+        key = host.file(f"/etc/apt/keyrings/{name}.asc")
+        assert key.is_file
+        assert key.mode == 0o644
+    else:
+        keys = host.check_output("rpm -q gpg-pubkey --qf '%{VERSION}\\n'")
+        short_ids = {"microsoft": "be1229cf", "microsoft-2025": "f748182b"}
+        assert short_ids[name] in keys.lower().split()
+
+
+def test_repository_configured(host):
+    if host.exists("apt-get"):
+        repo = host.file("/etc/apt/sources.list.d/microsoft-prod.list")
+        assert repo.contains("signed-by=/etc/apt/keyrings/microsoft.asc")
+    else:
+        repo = host.file("/etc/yum.repos.d/microsoft-prod.repo")
+        assert repo.contains("packages.microsoft.com/.*/prod/")

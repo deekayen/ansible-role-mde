@@ -1,13 +1,19 @@
 ---
-
 extends: default
 
 rules:
-  comments: disable
-  indentation:
-    level: warning
-    indent-sequences: consistent
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: false
+  braces:
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
   line-length:
-    level: warning
-    allow-non-breakable-inline-mappings: true
-  truthy: disable
+    max: 160
+  truthy:
+    allowed-values: ['true', 'false']
+
+ignore: |
+  .github/

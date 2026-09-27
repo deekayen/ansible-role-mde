@@ -1,3 +1,20 @@
 ---
-
 install_log: /var/log/microsoft/mdatp/install.log
+
+# packages.microsoft.com signs older repositories with microsoft.asc and
+# newer ones (Debian 13, Ubuntu 26.04) with microsoft-2025.asc; trust both.
+mde_signing_keys:
+  - name: microsoft
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    fingerprint: BC528686B50D79E339D3721CEB3E94ADBE1229CF
+  - name: microsoft-2025
+    url: https://packages.microsoft.com/keys/microsoft-2025.asc
+    fingerprint: AA86F75E427A19DD33346403EE4D7792F748182B
+
+mde_apt_keyrings: "{{ mde_signing_keys | map(attribute='name') | map('regex_replace', '^(.+)$', '/etc/apt/keyrings/\\1.asc') | join(',') }}"
+
+# Repository path components on packages.microsoft.com.
+mde_rpm_distro: >-
+  {{ {'RedHat': 'rhel', 'Amazon': 'amazonlinux', 'AlmaLinux': 'alma', 'OracleLinux': 'ol'}.get(ansible_distribution, ansible_distribution | lower) }}
+mde_deb_version: >-
+  {{ (ansible_distribution == 'Debian') | ternary(ansible_distribution_major_version, ansible_distribution_version) }}

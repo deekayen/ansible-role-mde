@@ -1,5 +1,4 @@
 ---
-
 name: CI
 'on':
   pull_request:
@@ -7,11 +6,28 @@ name: CI
     branches:
       - main
 
-defaults:
-  run:
-    working-directory: 'deekayen.mde'
-
 jobs:
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible-lint flake8
+
+      - name: Lint code.
+        run: ansible-lint --profile production
+
+      - name: Lint Python tests.
+        run: flake8 molecule/
 
   molecule:
     name: Molecule
@@ -19,24 +35,26 @@ jobs:
     strategy:
       matrix:
         distro:
-          - centos7
-          - centos8
-          - debian9
-          - debian10
+          - rockylinux9
+          - rockylinux10
+          - amazonlinux2023
+          - ubuntu2204
+          - ubuntu2404
+          - ubuntu2604
+          - debian12
+          - debian13
 
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'deekayen.mde'
+        uses: actions/checkout@v4
 
       - name: Set up Python 3.
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
 
       - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker,lint] docker pytest-testinfra
+        run: pip3 install ansible-core molecule molecule-plugins[docker] docker pytest-testinfra
 
       - name: Run Molecule tests.
         run: molecule test

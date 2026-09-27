@@ -1,4 +1,0 @@
----
-
-warn_list:
-  - yaml  # Violations reported by yamllint

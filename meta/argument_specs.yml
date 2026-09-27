@@ -1,0 +1,30 @@
+---
+argument_specs:
+  main:
+    short_description: Deploy Microsoft Defender for Endpoint on Linux.
+    description:
+      - Adds the packages.microsoft.com repository and signing keys,
+        extracts the onboarding package, and installs (or removes) the
+        mdatp package.
+    author:
+      - David Norman
+    options:
+      channel:
+        type: str
+        default: prod
+        choices:
+          - prod
+          - insiders-fast
+          - insiders-slow
+        description: Microsoft Defender for Endpoint release channel.
+      onboarding_source:
+        type: str
+        default: "{{ role_path }}/files/WindowsDefenderATPOnboardingPackage.zip"
+        description: >-
+          Local path or http(s) URL of the onboarding zip downloaded from
+          the Microsoft Defender portal. The default placeholder deposits
+          an empty mdatp_onboard.json.
+      uninstall:
+        type: bool
+        default: false
+        description: Remove Defender, its repository, keys, and configuration.

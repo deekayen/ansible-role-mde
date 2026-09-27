@@ -1,56 +1,40 @@
 ---
-
 - name: Create Defender configuration directories.
-  file:
+  ansible.builtin.file:
     path: /etc/opt/microsoft/mdatp/
-    state: "{{ uninstall | ternary ('absent', 'directory') }}"
-    mode: 0755
+    state: "{{ uninstall | bool | ternary('absent', 'directory') }}"
+    mode: "0755"
     owner: root
     group: root
   tags:
     - onboarding
 
 - name: Extract and validate the onboarding package.
+  when: not uninstall | bool
+  tags:
+    - onboarding
   block:
-  - name: Extract onboarding package.
-    unarchive:
-      src: "{{ onboarding_source }}"
-      dest: /etc/opt/microsoft/mdatp
-      creates: /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
-      mode: 0600
-      owner: root
-      group: root
-      remote_src: "{{ '://' in onboarding_source }}"
-    register: unarchive_out
-    ignore_errors: yes
-    tags:
-      - onboarding
-      - molecule-notest
-      
-  - name: Create licence file
-    command:
-      cmd: /usr/bin/python3 /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
-      creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json
-  
-  - name: "DEBUG: output from onboarding unzip attempt."
-    debug:
-      var: unarchive_out
-      verbosity: 3
-    when:
-      - unarchive_out is defined
-    tags:
-      - onboarding
-      - molecule-notest
-  
-  - name: Custom error handling for configuration unzip.
-    fail:
-      msg: "mdatp configuration json did not unzip successfully."
-    when:
-      - unarchive_out is defined
-      - unarchive_out.failed
-      - not 'Failed to find handler' in unarchive_out.msg
-    tags:
-      - onboarding
-      - molecule-notest
-  
-  when: not uninstall
+    # unarchive compares the archive with what is already extracted, so it
+    # stays idempotent for both the placeholder and a real onboarding zip.
+    - name: Extract onboarding package.
+      ansible.builtin.unarchive:
+        src: "{{ onboarding_source }}"
+        dest: /etc/opt/microsoft/mdatp
+        mode: "0600"
+        owner: root
+        group: root
+        remote_src: "{{ '://' in onboarding_source }}"
+      register: unarchive_out
+      failed_when:
+        - unarchive_out.failed | default(false)
+        - "'Failed to find handler' not in unarchive_out.msg | default('')"
+
+    - name: "DEBUG: output from onboarding unzip attempt."
+      ansible.builtin.debug:
+        var: unarchive_out
+        verbosity: 3
+
+    - name: Create license file.
+      ansible.builtin.command:
+        cmd: /usr/bin/python3 /etc/opt/microsoft/mdatp/MicrosoftDefenderATPOnboardingLinuxServer.py
+        creates: /etc/opt/microsoft/mdatp/mdatp_onboard.json

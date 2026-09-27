@@ -1,43 +1,46 @@
 ---
+- name: Validate role variables.
+  ansible.builtin.import_tasks: assert.yml
+  tags:
+    - always
 
-- name: Validate OS version requirements.
-  assert:
-    that:
-      - ansible_distribution_major_version > "6"
-    fail_msg: "Only RedHat 7 and newer are supported."
-    success_msg: "OS major version supported."
+- name: Update the apt cache.
+  ansible.builtin.apt:
+    update_cache: true
   when:
-    - not uninstall
-    - ansible_os_family == "RedHat"
-
-- name: apt-get update
-  apt:
-    update_cache: yes
-  when:
-    - not uninstall
+    - not uninstall | bool
     - ansible_os_family == "Debian"
   tags:
     - install
     - dependencies
 
+# EL 9 and Amazon Linux 2023 ship curl-minimal, which provides the curl
+# command but conflicts with the curl package, so only add curl if missing.
+- name: Check for the curl command.
+  ansible.builtin.stat:
+    path: /usr/bin/curl
+  register: mde_curl
+  when: not uninstall | bool
+  tags:
+    - install
+    - dependencies
+
 - name: Install documented dependencies.
-  package:
-    name:
-      - curl
-      - unzip
+  ansible.builtin.package:
+    name: "{{ ['unzip'] + ([] if mde_curl.stat.exists else ['curl']) }}"
     state: present
-  when: not uninstall
+  when: not uninstall | bool
   tags:
     - install
     - dependencies
 
 - name: Install undocumented dependencies for EL 8.
-  dnf:
+  ansible.builtin.dnf:
     name:
       - audispd-plugins
     state: present
   when:
-    - not uninstall
+    - not uninstall | bool
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == "8"
   tags:
@@ -45,53 +48,51 @@
     - dependencies
 
 - name: Install documented Debian dependencies.
-  apt:
+  ansible.builtin.apt:
     name:
       - apt-transport-https
       - libplist-utils
-      - python-apt
       - python3-apt
       - gnupg
     state: present
   when:
-    - not uninstall
+    - not uninstall | bool
     - ansible_os_family == "Debian"
   tags:
     - install
     - dependencies
 
 - name: Setup packages.microsoft.com repository.
-  include_tasks: repository.yml
+  ansible.builtin.include_tasks: repository.yml
 
 - name: Unzip the onboarding package from Microsoft Defender Security Center.
-  include_tasks: onboarding_setup.yml
+  ansible.builtin.include_tasks: onboarding_setup.yml
 
 - name: Manage the Defender package from Microsoft.
-  include_tasks: package.yml
+  ansible.builtin.include_tasks: package.yml
 
 - name: Check for install log.
-  stat:
+  ansible.builtin.stat:
     path: "{{ install_log }}"
   register: mdatp_install_log
   when: ansible_verbosity > 2
   tags:
     - debug
 
-- block:
-  - name: Load install log contents.
-    command: "cat {{ install_log }}" # noqa no-changed-when
-    register: mdatp_install
-    tags:
-      - debug
-
-  - name: "DEBUG: Print mdatp install log to console."
-    debug:
-      msg: "{{ mdatp_install.stdout }}"
-      verbosity: 3
-    tags:
-      - debug
-
+- name: Show the mdatp install log.
   when:
     - mdatp_install_log.stat.exists is defined
     - mdatp_install_log.stat.exists
     - mdatp_install_log.stat.size > 0
+  tags:
+    - debug
+  block:
+    - name: Load install log contents.
+      ansible.builtin.command: "cat {{ install_log }}"
+      register: mdatp_install
+      changed_when: false
+
+    - name: "DEBUG: Print mdatp install log to console."
+      ansible.builtin.debug:
+        msg: "{{ mdatp_install.stdout }}"
+        verbosity: 3
